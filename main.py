@@ -13,10 +13,21 @@ data = {
   "pitches in use" : ["dense", "sparse"],
   "dynamics" : ["loud", "soft", "more (complex)", "less (complex)"],
   "notes" : ["fast", "slow"],
-  "meter" : ()
+  "meter" : [""]
 }
 
+def randomMeter():
+  length = random.choice([1,2,3,4])
+  parts = []
+  if length < 2: parts.append( random.choice([3,4,5,6,7]) )
+  else:
+    for i in range(length):
+      parts.append( random.choice( [2,3,4] ) )
+  return parts
+
 while True:
-  i = random.choice( list( data.keys() ) )
-  print(i)
+  k = random.choice( list( data.keys() ) )
+  v = random.choice( list( data[k] ) )
+  if k == "meter": v = str( randomMeter() )
+  print( k + ": " + v )
   time.sleep(1)
