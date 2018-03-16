@@ -9,11 +9,11 @@ data = {
     "maj b6", "dor b5", "phr b4", "lyd b3", "mix b2", "lyd #2#5", "loc b7",
     "whole", "dim up", "dim down", "aug up", "aug down"
   ],
-  "tempo" : ["accel", "ritard"],
   "pitches in use" : ["dense", "sparse"],
-  "dynamics" : ["loud", "soft", "more (complex)", "less (complex)"],
-  "notes" : ["fast", "slow"],
-  "meter" : ()
+  "dynamics" : ["loud(er)", "soft(er)", "more (complex)", "less (complex)"],
+  "rhythm" : ["fast(er)", "slow(er)", "more (complex)", "less (complex)"],
+  "tempo" : ["accel", "ritard"],
+  "meter" : () # note: weird
 }
 
 def randomMeter():
