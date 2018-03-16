@@ -13,7 +13,7 @@ data = {
   "pitches in use" : ["dense", "sparse"],
   "dynamics" : ["loud", "soft", "more (complex)", "less (complex)"],
   "notes" : ["fast", "slow"],
-  "meter" : [""]
+  "meter" : ()
 }
 
 def randomMeter():
@@ -27,7 +27,7 @@ def randomMeter():
 
 while True:
   k = random.choice( list( data.keys() ) )
-  v = random.choice( list( data[k] ) )
   if k == "meter": v = str( randomMeter() )
+  else: v = random.choice( list( data[k] ) )
   print( k + ": " + v )
-  time.sleep(1)
+  time.sleep(3)
