@@ -2,7 +2,7 @@ import time
 import random
 
 data = {
-  "scales" : [
+  "scale" : [
     "maj", "dor", "phr", "lyd", "mix", "aeol", "loc",
     "dor #7 = maj b3", "phr #6 = dor b2", "lyd #5", "mix #4 = lyd b7", "aeol #3 = mix b6", "loc #2 = aeol b5", "loc b4",
     "aeol #7", "loc #6", "maj #5", "dor #4", "phr #2", "lyd #2", "loc b4bb7",
@@ -29,5 +29,6 @@ while True:
   k = random.choice( list( data.keys() ) )
   if k == "meter": v = str( randomMeter() )
   else: v = random.choice( list( data[k] ) )
+  if k == "scale": v = str( random.randint(0,11) ) + " " + v
   print( k + ": " + v )
   time.sleep(3)
