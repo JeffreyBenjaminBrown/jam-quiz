@@ -1,8 +1,8 @@
 {-# LANGUAGE TupleSections #-}
-
 module Formulas where
 
 import qualified Data.Map as M
+import qualified Data.List as L
 
 import Control.Monad.State
 import System.Random
@@ -10,6 +10,7 @@ import System.Random
 
 quizNames =    quiz "scale formula" "scale name" formulaNamePairs
 quizFormulas = quiz "scale name" "scale formula" nameFormulaPairs
+quizVariants = quiz "scale name" "set of variants" nameVariantPairs
 
 quiz :: (Show a, Show b) => String -> String -> [(a,b)] -> Int -> IO ()
 quiz keyType valType kvList seed = loop rands
@@ -28,6 +29,23 @@ formulaNamePairs = map (\(a,b) -> (b,a)) nameSetFormulaPairs
 
 nameFormulaPairs :: [(String, [Int])]
 nameFormulaPairs = concatMap (\(a,b) -> map (,b) a) nameSetFormulaPairs
+
+nameVariantPairs :: [(String, [String])]
+nameVariantPairs = map k variantFamilies where
+  k :: [String] -> (String, [String])
+  k vs@(variant:_) = (head $ words variant, concatMap (tail . words) vs)
+
+variantFamilies :: [[String]]
+variantFamilies = families where
+  names = concatMap fst nameSetFormulaPairs
+  variants = filter (\a -> length (words a) > 1) names
+  families = foldl k [] $ L.sort variants where
+    k :: [[String]] -> String -> [[String]]
+    k [] vart = [[vart]]
+    k f@(fam:fams) vart =
+      if head (words vart) == head (words $ head fam)
+      then (vart : fam) : fams
+      else [vart] : f
 
 nameSetFormulaPairs :: [( [String], [Int] )]
 nameSetFormulaPairs = 
