@@ -1,3 +1,5 @@
+-- TODO : given scale, degree, what's the other scale
+--      : (hard) given 2 root-scale pairs, which notes in common
 {-# LANGUAGE TupleSections #-}
 module Formulas where
 
@@ -8,12 +10,12 @@ import Control.Monad.State
 import System.Random
 
 
-quizNames =    quiz "scale formula" "scale name" formulaNamePairs
-quizFormulas = quiz "scale name" "scale formula" nameFormulaPairs
-quizVariants = quiz "scale name" "set of variants" nameVariantPairs
+quizNames =    quizKVList "scale formula" "scale name" formulaNamePairs
+quizFormulas = quizKVList "scale name" "scale formula" nameFormulaPairs
+quizVariants = quizKVList "scale name" "set of variants" nameVariantPairs
 
-quiz :: (Show a, Show b) => String -> String -> [(a,b)] -> Int -> IO ()
-quiz keyType valType kvList seed = loop rands
+quizKVList :: (Show a, Show b) => String -> String -> [(a,b)] -> Int -> IO ()
+quizKVList keyType valType kvList seed = loop rands
   where rands = randomRs (0, length kvList - 1) (mkStdGen seed) :: [Int]
         loop rands = do
           let kv = kvList !! head rands
