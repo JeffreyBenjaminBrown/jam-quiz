@@ -1,0 +1,39 @@
+-- This file has been generated from package.yaml by hpack version 0.20.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: c30eb41b3e25a139d545c98470fbfc924fd0e980df253176cb9fd3547555b966
+
+name:           haskell
+version:        0.1.0.0
+description:    Please see the README on Github at <https://github.com/githubuser/haskell#readme>
+homepage:       https://github.com/githubuser/haskell#readme
+bug-reports:    https://github.com/githubuser/haskell/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2018 Author name here
+license:        BSD3
+-- license-file:   
+build-type:     Simple
+cabal-version:  >= 1.10
+
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/haskell
+
+library
+  hs-source-dirs:
+      haskell
+  build-depends:
+                base >=4.7 && <5
+              , containers
+              , random
+              , mtl
+  exposed-modules:
+      Formulas
+  other-modules:
+      Paths_haskell
+  default-language: Haskell2010

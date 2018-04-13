@@ -31,4 +31,4 @@ while True:
   else: v = random.choice( list( data[k] ) )
   if k == "scale": v = str( random.randint(0,11) ) + " " + v
   print( k + ": " + v )
-  time.sleep(4)
+  time.sleep(8)
