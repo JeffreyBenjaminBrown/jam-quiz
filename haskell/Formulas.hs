@@ -13,6 +13,7 @@ import System.Random
 quizNames =    quizKVList "scale formula" "scale name" formulaNamePairs
 quizFormulas = quizKVList "scale name" "scale formula" nameFormulaPairs
 quizVariants = quizKVList "scale name" "set of variants" nameVariantPairs
+quizModes = quizKVRingList "scale" "mode" nameSetFormulaFamilies
 
 quizKVPair :: (Show a, Show b)
            => String -> String -> (a,b) -> IO ()        -> IO ()
@@ -31,8 +32,24 @@ quizKVList keyType valType kvList seed = loop rands
           let kv = kvList !! head rands
           quizKVPair keyType valType kv $ loop $ tail rands
 
-choose :: [a] -> Float -> a
-choose l f = l !! n where
+quizKVRingList :: (Show a, Show b)
+               => String -> String -> [[(a,b)]] -> Int -> IO ()
+quizKVRingList    keyType   valType   kvll         seed = loop rands where
+  rands = randomRs (0, 1) (mkStdGen seed) :: [Float]
+  loop rands@(a:b:c:moreRands) =
+    do let (_,kvl) = choose kvll a
+           (n,start) = choose kvl b
+           (m,_) = choose kvl c
+           m' = mod (m + n) (length kvl)
+           finish = kvl !! m'
+       quizKVPair
+         ("Starting from " ++ keyType)
+         ("What is the " ++ valType ++ " " ++ show m ++ " places higher")
+         (start,finish)
+         (loop moreRands)
+
+choose :: [a] -> Float -> (Int,a)
+choose l f = (n, l !! n) where
   f' = f - fromIntegral (floor f) -- ensures f is in (0,1)
   n = floor $ f' * fromIntegral (length l)
 
