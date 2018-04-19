@@ -13,7 +13,8 @@ import System.Random
 quizNames =    quizKVList "scale formula" "scale name" formulaNamePairs
 quizFormulas = quizKVList "scale name" "scale formula" nameFormulaPairs
 quizVariants = quizKVList "scale name" "set of variants" nameVariantPairs
-quizModes = quizKVRingList "scale" "mode" nameSetFormulaFamilies
+quizModes = quizKVRingList "scale" "mode" $ take 4 nameSetFormulaFamilies
+  -- take 4 to omit the modes of the symmetric scales, which are obvious
 
 quizKVPair :: (Show a, Show b)
            => String -> String -> (a,b) -> IO ()        -> IO ()
@@ -114,9 +115,9 @@ nameSetFormulaFamilies =
     , (["lyd 25"],[0,3,4,6,8,9,11])
     , (["loc 7"],[0,1,3,5,6,8,9]) ]
 
-  , [ (["whole"],[0,2,4,6,8,10])
-    , (["dim up"],[0,2,3,5,6,8,9,11])
-    , (["dim down"],[0,1,3,4,6,7,9,10])
-    , (["aug up"],[0,3,4,7,8,11])
+  , [ (["whole"],[0,2,4,6,8,10]) ]
+  , [ (["dim up"],[0,2,3,5,6,8,9,11])
+    , (["dim down"],[0,1,3,4,6,7,9,10]) ]
+  , [ (["aug up"],[0,3,4,7,8,11])
     , (["aug down"],[0,1,4,5,8,9]) ]
   ]
