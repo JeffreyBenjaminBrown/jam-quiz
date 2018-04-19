@@ -31,6 +31,12 @@ quizKVList keyType valType kvList seed = loop rands
           let kv = kvList !! head rands
           quizKVPair keyType valType kv $ loop $ tail rands
 
+choose :: [a] -> Float -> a
+choose l f = l !! n where
+  f' = f - fromIntegral (floor f) -- ensures f is in (0,1)
+  n = floor $ f' * fromIntegral (length l)
+
+-- | = Data
 formulaNamePairs :: [([Int], [String])]
 formulaNamePairs = map (\(a,b) -> (b,a)) nameSetFormulaPairs
 
