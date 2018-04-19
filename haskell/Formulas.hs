@@ -10,6 +10,7 @@ import Control.Monad.State
 import System.Random
 
 
+quizNames, quizFormulas, quizVariants, quizModes :: Int -> IO ()
 quizNames =    quizKVList "scale formula" "scale name" formulaNamePairs
 quizFormulas = quizKVList "scale name" "scale formula" nameFormulaPairs
 quizVariants = quizKVList "scale name" "set of variants" nameVariantPairs
@@ -37,22 +38,25 @@ quizKVRingList :: (Show a, Show b)
                => String -> String -> [[(a,b)]] -> Int -> IO ()
 quizKVRingList    keyType   valType   kvll         seed = loop rands where
   rands = randomRs (0, 1) (mkStdGen seed) :: [Float]
-  loop rands@(a:b:c:moreRands) =
-    do let (_,kvl) = choose kvll a
-           (n,start) = choose kvl b
-           (m,_) = choose kvl c
-           m' = mod (m + n) (length kvl)
-           finish = kvl !! m'
-       quizKVPair
-         ("Starting from " ++ keyType)
-         ("What is the " ++ valType ++ " " ++ show m ++ " places higher")
-         (start,finish)
-         (loop moreRands)
+  loop rands@(a:b:c:moreRands) = do
+    let (_,kvl) = choose kvll a
+        (n,start) = choose kvl b
+        (m,_) = choose kvl c
+        m' = mod (m + n) (length kvl)
+        finish = kvl !! m'
+    case m of 0 -> loop moreRands -- try again
+              _ -> quizKVPair
+                   ("Starting from " ++ keyType)
+                   ("What is the " ++ valType ++ " " ++ show m
+                    ++ " places higher")
+                   (start,finish)
+                   (loop moreRands)
 
 choose :: [a] -> Float -> (Int,a)
 choose l f = (n, l !! n) where
   f' = f - fromIntegral (floor f) -- ensures f is in (0,1)
   n = floor $ f' * fromIntegral (length l)
+
 
 -- | = Data
 formulaNamePairs :: [([Int], [String])]
@@ -82,7 +86,7 @@ nameSetFormulaPairs :: [( [String], [Int] )]
 nameSetFormulaPairs = concat nameSetFormulaFamilies
 
 nameSetFormulaFamilies :: [[( [String], [Int] )]]
-nameSetFormulaFamilies = 
+nameSetFormulaFamilies =
   [ [ (["maj"],[0,2,4,5,7,9,11])
     , (["dor"],[0,2,3,5,7,9,10])
     , (["phr"],[0,1,3,5,7,8,10])
