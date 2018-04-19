@@ -14,17 +14,22 @@ quizNames =    quizKVList "scale formula" "scale name" formulaNamePairs
 quizFormulas = quizKVList "scale name" "scale formula" nameFormulaPairs
 quizVariants = quizKVList "scale name" "set of variants" nameVariantPairs
 
-quizKVList :: (Show a, Show b) => String -> String -> [(a,b)] -> Int -> IO ()
-quizKVList keyType valType kvList seed = loop rands
-  where rands = randomRs (0, length kvList - 1) (mkStdGen seed) :: [Int]
-        loop rands = do
-          let kv = kvList !! head rands
+quizKVPair :: (Show a, Show b)
+           => String -> String -> (a,b) -> IO ()        -> IO ()
+quizKVPair    keyType   valType   kv       followAction =  do
           putStrLn $ "\n\n" ++ keyType ++ ": " ++ (show $ fst kv)
           putStrLn $ valType ++ "?"
           x <- getChar
           case x of 'q' -> return ()
                     _   -> do putStrLn $ show $ snd kv
-                              loop $ tail rands
+                              followAction
+
+quizKVList :: (Show a, Show b) => String -> String -> [(a,b)] -> Int -> IO ()
+quizKVList keyType valType kvList seed = loop rands
+  where rands = randomRs (0, length kvList - 1) (mkStdGen seed) :: [Int]
+        loop rands = do
+          let kv = kvList !! head rands
+          quizKVPair keyType valType kv $ loop $ tail rands
 
 formulaNamePairs :: [([Int], [String])]
 formulaNamePairs = map (\(a,b) -> (b,a)) nameSetFormulaPairs
