@@ -48,7 +48,7 @@ quizKVRingList    keyType   valType   kvll         seed = loop rands where
               _ -> quizKVPair
                    ("Starting from " ++ keyType)
                    ("What is the " ++ valType ++ " " ++ show m
-                    ++ " places higher")
+                    ++ " places (a \"" ++ show (m+1) ++ "th\") higher")
                    (start,finish)
                    (loop moreRands)
 
