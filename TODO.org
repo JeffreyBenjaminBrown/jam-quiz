@@ -1,0 +1,6 @@
+* quiz scales
+  Pick six nonzero numbers at random.
+  Order them.
+  Show the words and ask for the numbers, or vice versa.
+* divide the 24-edo, guitar and numlang code
+  At least one of those three can stand alone.
