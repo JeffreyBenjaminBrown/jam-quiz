@@ -1,0 +1,4 @@
+* quiz scales
+  Pick six nonzero numbers at random.
+  Order them.
+  Show the words and ask for the numbers, or vice versa.
