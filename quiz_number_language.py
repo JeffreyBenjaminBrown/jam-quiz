@@ -1,3 +1,5 @@
+# import quiz_number_language as q
+
 # Write two dictionaries, one for 0-9, the other for 0-6.
 # Pick something from either, and generate a (word,number) pair.
 # Show one, ask for the other, then show the other after a pause.
@@ -11,21 +13,23 @@ from typing import Tuple, List
 ### ### The interface
 ### ###
 
-def numPrompt_forWord ():
-  ofe = oneFromEach()
-  print("How would you say ", nums( ofe ), "?")
+def quiz_numPrompt_forWord ():
+  ofe = random_wordNumTriple()
+  print("How would you say ", numsFrom_wordNumTriple( ofe ), "?")
   input()
-  print( "Answer: " + word( ofe ) + "\n" )
-  numPrompt_forWord() # recurse
+  print( "Answer: " + wordFrom_wordNumTriple( ofe ) + "\n" )
+  quiz_numPrompt_forWord() # recurse
 
-def wordPrompt_forNum ():
-  ofe = oneFromEach()
-  print("What is the meaning of ", word( ofe ), "?")
+def quiz_wordPrompt_forNum ():
+  ofe = random_wordNumTriple()
+  print("What is the meaning of ", wordFrom_wordNumTriple( ofe ), "?")
   input()
-  print( "Answer: ", nums( ofe ), "\n" )
-  wordPrompt_forNum() # recurse
+  print( "Answer:            ",
+         numsFrom_wordNumTriple( ofe ),
+         "\n" )
+  quiz_wordPrompt_forNum() # recurse
 
-def guitarPrompt_forNum ( guitarSharp_24edo ):
+def quiz_guitarPrompt_forNum ( guitarSharp_24edo ):
   s = randomGuitarString()
   f = randomFret()
   n = stringAndFret_to24edo_aboveA ( s, f, guitarSharp_24edo )
@@ -35,9 +39,9 @@ def guitarPrompt_forNum ( guitarSharp_24edo ):
   for row in pic: print(row)
   input()
   print( "Answer: ", n/2, "\n" )
-  guitarPrompt_forNum ( guitarSharp_24edo ) # recurse
+  quiz_guitarPrompt_forNum ( guitarSharp_24edo ) # recurse
 
-def numPrompt_forGuitar ( guitarSharp_24edo ):
+def quiz_numPrompt_forGuitar ( guitarSharp_24edo ):
   s = randomGuitarString()
   f = randomFret()
   n = stringAndFret_to24edo_aboveA ( s, f, guitarSharp_24edo )
@@ -48,7 +52,7 @@ def numPrompt_forGuitar ( guitarSharp_24edo ):
   input()
   print( "Answer:\n" )
   for row in pic: print(row)
-  numPrompt_forGuitar ( guitarSharp_24edo ) # recurse
+  quiz_numPrompt_forGuitar ( guitarSharp_24edo ) # recurse
 
 
 ### ###
@@ -83,26 +87,30 @@ lastThreeConsonants = [ ("_",  0) ,
                         ("sh", 2) ,
                         ("s",  3) ]
 
-def oneFromEach () -> Tuple[ Tuple[ str, int ],
-                             Tuple[ str, int ],
-                             Tuple[ str, int ] ]:
+def random_wordNumTriple (
+) -> Tuple[ Tuple[ str, int ],
+            Tuple[ str, int ],
+            Tuple[ str, int ] ]:
   a = random.choice( firstThreeConsonants )
   b = random.choice( vowels )
   c = random.choice( lastThreeConsonants )
   return (a,b,c)
 
-def word (a : Tuple[ Tuple[ str, int ],
-                     Tuple[ str, int ],
-                     Tuple[ str, int ] ]
-          ) -> str:
+def wordFrom_wordNumTriple (
+    a : Tuple[ Tuple[ str, int ],
+               Tuple[ str, int ],
+               Tuple[ str, int ] ]
+) -> str:
   return " ".join( [ a[0] [0],
                      a[1] [0],
                      a[2] [0] ] )
 
-def nums (a : Tuple[ Tuple[ str, int ],
-                     Tuple[ str, int ],
-                     Tuple[ str, int ] ]
-          ) -> Tuple[ int, int, int ]:
+def numsFrom_wordNumTriple (
+    a : Tuple[
+      Tuple[ str, int ],
+      Tuple[ str, int ],
+      Tuple[ str, int ] ]
+) -> Tuple[ int, int, int ]:
   return ( a[0] [1] ,
            a[1] [1] ,
            a[2] [1] )

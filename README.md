@@ -1,4 +1,11 @@
-# On interpreting scale names
+# Re `quiz_number_language.py`
+
+This is for quizzing myself on a system that allows me to state numbers from 0 to 23 extremely quickly, and relate them to the guitar fretboard.
+
+See node `yeh45hgqGnZiBsiZ` in smsn-public for more detail.
+
+
+# On (I guess?) `haskell/Formulas.hs`: Interpreting scale names
 
 Scale names are printed preceded by an integer in 0 to 11, indicating the scale's root. It is a number of halfsteps, measured relative to something. It's up to you whether to interpret it as relative to a fixed pitch or relative to the previous scale's root.
 
