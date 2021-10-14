@@ -13,7 +13,7 @@ author:         Author name here
 maintainer:     example@example.com
 copyright:      2018 Author name here
 license:        BSD3
--- license-file:   
+-- license-file:
 build-type:     Simple
 cabal-version:  >= 1.10
 
@@ -33,7 +33,8 @@ library
               , random
               , mtl
   exposed-modules:
-      Formulas
+      Formulas,
+      Quiz_58
   other-modules:
       Paths_haskell
   default-language: Haskell2010
