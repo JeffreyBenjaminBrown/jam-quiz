@@ -10,7 +10,11 @@ import System.Random.Internal
 import Data.Fixed
 
 
-g = mkStdGen 213534
+-- | TODO: Make this monadic. (Search for "monadic" here:
+-- https://hackage.haskell.org/package/random-1.2.1/docs/System-Random.html
+
+random_seed = 2 -- | PITFALL: Might want to change.
+g = mkStdGen random_seed
 
 random_sequence :: UniformRange a
                 => (a, a) -> [a]
@@ -45,10 +49,26 @@ spit_notes =
             monome_position_to_edo_value (col,row)
           go rest
 
+quiz_sums :: Int -> IO ()
+quiz_sums edo = let
+  bound = edo-1
+  nums = random_sequence ( bound * (-1) :: Int,
+                           bound )
+  go :: [Int] -> IO ()
+  go nums = let
+    ([n1,n2], rest) = splitAt 2 nums
+    in do putStrLn (  "What is " ++ show n1 ++
+                      " + " ++ show n2 ++ "?" )
+          _ <- getChar
+          putStrLn $ show $ mod (n1 + n2) edo
+          go rest
+  in go nums
+
 -- Just a demo.
 spit_floats :: IO ()
 spit_floats =
   go $ random_sequence (0 :: Float, 1) where
+  go :: [Float] -> IO ()
   go nums = let
     ([randomNumber], rest) = splitAt 1 nums
     in do putStrLn "Ready?"
