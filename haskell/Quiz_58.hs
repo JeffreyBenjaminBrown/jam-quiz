@@ -13,32 +13,8 @@ import Data.Fixed
 -- | TODO: Make this monadic. (Search for "monadic" here:
 -- https://hackage.haskell.org/package/random-1.2.1/docs/System-Random.html
 
-random_seed = 2 -- | PITFALL: Might want to change.
-g = mkStdGen random_seed
-
-random_sequence :: UniformRange a
-                => (a, a) -> [a]
-random_sequence (min, max) =
-  unfoldr (Just . uniformR (min, max)) g
-
--- | Returns an integer in [0,max].
-unit_float_to_int :: Int -> Float -> Int
-unit_float_to_int max f =
-  floor $ f * fromIntegral (max + 1)
-
-random_monome_position :: [Float] -> (Int,Int,[Float])
-random_monome_position nums = let
-  ([col,row], rest) = splitAt 2 nums
-  in ( unit_float_to_int 4 col,
-       unit_float_to_int 8 row - 4,
-       rest )
-
-monome_position_to_edo_value :: (Int, Int) -> Int
-monome_position_to_edo_value (col,row) =
-  col * 15 + row * 2
-
-spit_notes :: IO ()
-spit_notes =
+monome_quiz :: IO ()
+monome_quiz =
   go $ random_sequence (0 :: Float, 1) where
   go nums = let
     (col,row,rest) = random_monome_position nums
@@ -49,6 +25,28 @@ spit_notes =
             monome_position_to_edo_value (col,row)
           go rest
 
+-- quiz_grid_sums 58 15 2 (0,4) (-4,4)
+-- quiz_grid_sums 41 8 1 (0,5) (-4,4)
+quiz_grid_sums :: Int -> Int      -> Int      -> (Int,Int)    -> (Int,Int) -> IO ()
+quiz_grid_sums    edo colInterval rowInterval (minCol,maxCol) (minRow,maxRow) = let
+  bound :: Int = edo-1
+  go :: [Float] -> IO ()
+  go nums = let
+    ([n1,n2,n3,n4],rest) :: ([Float],[Float]) = splitAt 4 nums
+    i1 = likelyGridInterval n1 n2
+      colInterval rowInterval (minCol,maxCol) (minRow,maxRow)
+    i2 = likelyGridInterval n3 n4
+      colInterval rowInterval (minCol,maxCol) (minRow,maxRow)
+    in do putStrLn (  "What is " ++ show i1 ++
+                      " + " ++ show i2 ++
+                      " modulo " ++ show edo ++ "?" )
+          _ <- getChar
+          putStrLn $ show $ mod (i1 + i2) edo
+          go rest
+  in go $ random_sequence (0,1)
+
+-- | An example of an interactive session using this
+-- can be found at /README/using-the-arithmetic-quizzer.md
 quiz_sums :: Int -> IO ()
 quiz_sums edo = let
   bound = edo-1
@@ -58,7 +56,8 @@ quiz_sums edo = let
   go nums = let
     ([n1,n2], rest) = splitAt 2 nums
     in do putStrLn (  "What is " ++ show n1 ++
-                      " + " ++ show n2 ++ "?" )
+                      " + " ++ show n2 ++
+                      " modulo " ++ show edo ++ "?" )
           _ <- getChar
           putStrLn $ show $ mod (n1 + n2) edo
           go rest
@@ -75,3 +74,36 @@ spit_floats =
           _ <- getChar
           putStrLn $ show randomNumber
           go rest
+
+random_sequence :: UniformRange a
+                => (a, a) -> [a]
+random_sequence (min, max) =
+  unfoldr (Just . uniformR (min, max)) g
+
+random_monome_position :: [Float] -> (Int,Int,[Float])
+random_monome_position nums = let
+  ([col,row], rest) = splitAt 2 nums
+  in ( unit_float_to_int 4 col,
+       unit_float_to_int 8 row - 4,
+       rest )
+
+-- | Returns an integer in [0,max].
+unit_float_to_int :: Int -> Float -> Int
+unit_float_to_int max f =
+  floor $ f * fromIntegral (max + 1)
+
+monome_position_to_edo_value :: (Int, Int) -> Int
+monome_position_to_edo_value (col,row) =
+  mod (col * 15 + row * 2) 58
+
+likelyGridInterval :: Float     -> Float ->
+  Int         -> Int      -> (Int,Int)    -> (Int,Int) -> Int
+likelyGridInterval    colRandom rowRandom
+  colInterval rowInterval (minCol,maxCol) (minRow,maxRow)
+  = let
+  col = floor (colRandom * fromIntegral (1 + maxCol - minCol)) + minCol
+  row = floor (rowRandom * fromIntegral (1 + maxRow - minRow)) + minRow
+  in (col * colInterval + row * rowInterval)
+
+g = mkStdGen random_seed
+random_seed = 7 -- | PITFALL: Might want to change.
