@@ -1,0 +1,26 @@
+* No mode from major41 is equal to any mode from minor41.
+** In fact none is even within one edit of the other.
+* eq8 and eq9 are distinct from all the dim fmailies I defined
+** code to prove it
+to_test = [ dim_up
+          , dim_up'
+          , dim_up_pyth
+          , dim_up_pyth'
+          , dim_up_sept
+          , dim_down
+          , dim_down_pyth
+          , dim_down_pyth'
+          , dim_down_sept
+          , dim_down_sept' ]
+
+test :: [Int] -> [Int] -> Bool
+test scale1 scale2 =
+  L.sort [ mode 41 scale1 i | i <- [0..length scale1 - 1]] ==
+  L.sort [ mode 41 scale2  i | i <- [0..length scale2 - 1]]
+
+any (test eq_8) to_test
+any (test eq_9) to_test
+
+* how to see whether two families overlap
+  myPrint $ L.sort $ [ mode 41 aug_up i       | i <- [0..6]]
+  myPrint $ L.sort $ [ mode 41 aug_up_down6 i | i <- [0..6]]
