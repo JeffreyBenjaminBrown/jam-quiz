@@ -1,5 +1,6 @@
 import Quiz_58
 import Modes
+import Tests
 import Util
 
 import qualified Data.List as L

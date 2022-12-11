@@ -14,14 +14,17 @@ allModes edo scale =
   [ mode edo scale i
   | i <- [0..length scale - 1] ]
 
--- | In a "well-behaved" scale, the thirds are all between 245c and 455c.
--- Those are chosen to admit every septimal minor and major third,
+-- | In a @thirds_in (x,y)@ scale,
+-- the thirds are all between @x@ and @y@ cents.
+--
+-- I like (x,y) = (245,455).
+-- Those will admit every septimal minor and major third,
 -- even in an edo where the septimal minor third is around 2250c
 -- (which makes it equal to the septimal major second).
--- (The true 9:7 is around 435c, and the true 7:6 around 267c,
--- so this gives about 20c of leeway to each.)
-well_behaved :: Edo -> [Int] -> Bool
-well_behaved edo scale
+-- The true 9:7 is around 435c, and the true 7:6 around 267c,
+-- so the above gives about 20c of leeway to each.
+thirdsIn :: (Float, Float) -> Edo -> [Int] -> Bool
+thirdsIn (x,y) edo scale
   | length scale < 3 = False
   | otherwise = let
       ext = scale ++ map (+edo) (take 2 scale)
@@ -34,8 +37,36 @@ well_behaved edo scale
         f :: Int -> Float
         f i = (fromIntegral i / fromIntegral edo) * 1200
       isGoodThird :: Float -> Bool
-      isGoodThird f = f > 245 && f < 455
+      isGoodThird f = f > x && f < y
       in all isGoodThird thirdsInCents
+
+-- | All monotonic ascending series of length @size@,
+-- starting at 0,
+-- with every integer less than @top@,
+-- such that every pair of adjacent members
+-- differs by at least @minJump@.
+monoAscendingFromZero :: Int -> Int -> Int -> [[Int]]
+monoAscendingFromZero top minJump size =
+  map reverse $
+  incrementNTimes top (size-1) $ [[0]]
+  where
+    incrementNTimes :: Int -> Int -> [[Int]] -> [[Int]]
+    incrementNTimes top 0 lists = lists
+    incrementNTimes top n lists = let
+      x :: [[Int]]
+      x = concatMap (increments top) lists
+      in incrementNTimes top (n-1) x
+
+    -- | All the ways of prepending a bigger element to the input list.
+    -- Assumes the input list is in descending order.
+    increments :: Int -> [Int] -> [[Int]]
+    increments top (a:as) = [ b:a:as
+                            | b <- [a + minJump .. top-1]]
+
+allTriads :: Edo -> [[Int]]
+allTriads edo = [ [0,a,b]
+                | a <- [1 .. edo-1],
+                  b <- [a+1 .. edo-1] ]
 
 equivalents :: Edo -> [[Int]] -> [[Int]]
 equivalents _ [] = []
@@ -50,7 +81,7 @@ minimal_mode edo scale =
 mode :: Edo
      -> [Int]
      -> Int -- ^ PITFALL: 0-indexed. So for example,
-            -- `mode 12 major 2` = phrygian, not dorian.
+            -- @mode 12 major 2@ = phrygian, not dorian.
      -> [Int]
 mode _ [] _ = []
 mode edo scale index = let
