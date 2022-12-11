@@ -14,6 +14,18 @@ allModes edo scale =
   [ mode edo scale i
   | i <- [0..length scale - 1] ]
 
+nice41edo7scales = equivalents 41
+                   $ filter (thirdsIn (245, 455) 41)
+                   $ monoAscendingFromZero 41 2 7
+
+nice31edo7scales = equivalents 31
+                   $ filter (thirdsIn (245, 455) 31)
+                   $ monoAscendingFromZero 31 2 7
+
+nice17edo7scales = equivalents 17
+                   $ filter (thirdsIn (245, 455) 17)
+                   $ monoAscendingFromZero 17 2 7
+
 -- | In a @thirds_in (x,y)@ scale,
 -- the thirds are all between @x@ and @y@ cents.
 --
@@ -23,6 +35,9 @@ allModes edo scale =
 -- (which makes it equal to the septimal major second).
 -- The true 9:7 is around 435c, and the true 7:6 around 267c,
 -- so the above gives about 20c of leeway to each.
+-- Also it has the symmetry of giving 55c more on either side of (300,400),
+-- i.e. the (floating-point-error-free)
+-- range of thirds in well-behaved scales in 12-edo.
 thirdsIn :: (Float, Float) -> Edo -> [Int] -> Bool
 thirdsIn (x,y) edo scale
   | length scale < 3 = False
