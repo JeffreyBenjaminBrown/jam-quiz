@@ -14,12 +14,29 @@ allModes edo scale =
   [ mode edo scale i
   | i <- [0..length scale - 1] ]
 
-wellBehavedScaleFamilies ::
-  Edo -> Int -> Int -> Int -> [[Int]]
-wellBehavedScaleFamilies edo minJump maxJump size =
+wellBehavedScaleFamilies
+  :: Edo
+  -> Int -- ^ ^ number of pitches
+  -> (Float, Float) -- ^ range of seconds in cents
+  -> (Float, Float) -- ^ range of thirds  in cents
+  -> (Float, Float) -- ^ range of fourths in cents
+  -> [[Int]] -- ^ Each @[Int]@ in this is a mode representating a family distinct from all the others
+wellBehavedScaleFamilies edo a (minJumpCents, maxJumpCents) b c =
+  let minJump = minInCents_toMinInEdo edo minJumpCents
+      maxJump = maxInCents_toMaxInEdo edo maxJumpCents
+  in wellBehavedScaleFamilies' edo a (minJump, maxJump) b c
+
+wellBehavedScaleFamilies' :: Edo
+                          -> Int -- ^ ^ number of pitches
+                          -> (Int, Int) -- ^ range of seconds, in Edo steps
+                          -> (Float, Float) -- ^ range of thirds  in cents
+                          -> (Float, Float) -- ^ range of fourths in cents
+                          -> [[Int]]
+wellBehavedScaleFamilies' edo size
+    (minJump, maxJump) (minThird, maxThird) (minFourth, maxFourth) =
   equivalents edo
-  $ filter (nthDifferencesIn 3 (350, 650) edo)
-  $ filter (nthDifferencesIn 2 (245, 455) edo)
+  $ filter (nthDifferencesIn 3 (minFourth, maxFourth) edo)
+  $ filter (nthDifferencesIn 2 (minThird,  maxThird) edo)
   $ monoAscendingFromZero edo minJump maxJump size
 
 -- | `nthDifferencesIn` generalizes `thirdsIn`.
