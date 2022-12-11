@@ -3,6 +3,8 @@
 module Modes where
 
 import qualified Data.List as L
+import           Data.Set (Set)
+import qualified Data.Set as S
 
 
 type Edo = Int
@@ -11,6 +13,39 @@ allModes :: Edo -> [Int] -> [[Int]]
 allModes edo scale =
   [ mode edo scale i
   | i <- [0..length scale - 1] ]
+
+-- | In a "well-behaved" scale, the thirds are all between 245c and 455c.
+-- Those are chosen to admit every septimal minor and major third,
+-- even in an edo where the septimal minor third is around 2250c
+-- (which makes it equal to the septimal major second).
+-- (The true 9:7 is around 435c, and the true 7:6 around 267c,
+-- so this gives about 20c of leeway to each.)
+well_behaved :: Edo -> [Int] -> Bool
+well_behaved edo scale
+  | length scale < 3 = False
+  | otherwise = let
+      ext = scale ++ map (+edo) (take 2 scale)
+        -- Extended scale, 2 degrees into the next octave.
+        -- For instance, [0,2,4,5,7,9,11,12,14] for major in 12-edo.
+      rotated = drop 2 scale ++ map (+edo) (take 2 scale)
+        -- Continuing that example, [4,5,7,9,11,12,14,16,17]
+      thirds = zipWith (-) rotated ext
+      thirdsInCents = map f thirds where
+        f :: Int -> Float
+        f i = (fromIntegral i / fromIntegral edo) * 1200
+      isGoodThird :: Float -> Bool
+      isGoodThird f = f > 245 && f < 455
+      in all isGoodThird thirdsInCents
+
+equivalents :: Edo -> [[Int]] -> [[Int]]
+equivalents _ [] = []
+equivalents edo scales =
+  S.toList $ S.fromList $ map (minimal_mode edo) scales
+
+minimal_mode :: Edo -> [Int] -> [Int]
+minimal_mode _ [] = []
+minimal_mode edo scale =
+  head $ L.sort $ allModes edo scale
 
 mode :: Edo
      -> [Int]
@@ -23,10 +58,6 @@ mode edo scale index = let
             ++ map (+edo) (take index scale)
   first = head rotated
   in map (+ (- first)) rotated
-
--- well_behaved_triads :: [[Int]]
--- equivalents :: [[Int]] -> [[Int]]
-
 
 minor41, minor41_sept, major41, major41_sept, whole, whole_sept, dim_up, dim_up', dim_up_pyth, dim_up_pyth', dim_up_sept, dim_down, dim_down_pyth, dim_down_pyth', dim_down_sept, dim_down_sept', aug_up, aug_up_down6, eq_5, eq_7, eq_8, eq_9  :: [Int]
 minor41        = [0,7,11,17,24,28,35]

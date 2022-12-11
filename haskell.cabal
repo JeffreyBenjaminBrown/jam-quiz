@@ -29,13 +29,15 @@ library
       haskell
   build-depends:
                 base >=4.7 && <5
+              , HUnit
               , containers
-              , random
               , mtl
+              , random
   exposed-modules:
       Formulas,
       Modes,
       Quiz_58,
+      Tests,
       Util
   other-modules:
       Paths_haskell
