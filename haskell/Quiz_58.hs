@@ -2,6 +2,11 @@
 ScopedTypeVariables,
 TypeApplications #-}
 
+-- | USAGE:
+-- The random seed might need changing. Search for "seed" in this file.
+-- Most of these functions work in any EDO,
+-- but `monome_quizz` is hard-coded to 58-EDO.
+
 module Quiz_58 where
 
 import Data.List as L
@@ -63,23 +68,6 @@ quiz_sums edo = let
           go rest
   in go nums
 
--- Just a demo.
-spit_floats :: IO ()
-spit_floats =
-  go $ random_sequence (0 :: Float, 1) where
-  go :: [Float] -> IO ()
-  go nums = let
-    ([randomNumber], rest) = splitAt 1 nums
-    in do putStrLn "Ready?"
-          _ <- getChar
-          putStrLn $ show randomNumber
-          go rest
-
-random_sequence :: UniformRange a
-                => (a, a) -> [a]
-random_sequence (min, max) =
-  unfoldr (Just . uniformR (min, max)) g
-
 random_monome_position :: [Float] -> (Int,Int,[Float])
 random_monome_position nums = let
   ([col,row], rest) = splitAt 2 nums
@@ -92,6 +80,7 @@ unit_float_to_int :: Int -> Float -> Int
 unit_float_to_int max f =
   floor $ f * fromIntegral (max + 1)
 
+-- | Hard-coded for 58-edo.
 monome_position_to_edo_value :: (Int, Int) -> Int
 monome_position_to_edo_value (col,row) =
   mod (col * 15 + row * 2) 58
@@ -105,5 +94,28 @@ likelyGridInterval    colRandom rowRandom
   row = floor (rowRandom * fromIntegral (1 + maxRow - minRow)) + minRow
   in (col * colInterval + row * rowInterval)
 
-g = mkStdGen random_seed
+
+-- | * Randomness
+
+-- | Demo: A random generation of a stream of floats.
+random_stream_of_floats :: IO ()
+random_stream_of_floats =
+  go $ random_sequence (0 :: Float, 1) where
+  go :: [Float] -> IO ()
+  go nums = let
+    ([randomNumber], rest) = splitAt 1 nums
+    in do putStrLn "Ready?"
+          _ <- getChar
+          putStrLn $ show randomNumber
+          go rest
+
+random_sequence :: UniformRange a
+                => (a, a) -> [a]
+random_sequence (min, max) =
+  unfoldr (Just . uniformR (min, max)) myStdGen
+
+myStdGen :: R.StdGen
+myStdGen = mkStdGen random_seed
+
+random_seed :: Int
 random_seed = 7 -- | PITFALL: Might want to change.
