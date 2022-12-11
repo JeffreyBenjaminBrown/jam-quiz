@@ -17,18 +17,22 @@ allModes edo scale =
 wellBehavedScaleFamilies :: Edo -> Int -> Int -> [[Int]]
 wellBehavedScaleFamilies edo minJump size =
   equivalents edo
+  $ filter (nthDifferencesIn 3 (350, 650) edo)
   $ filter (nthDifferencesIn 2 (245, 455) edo)
   $ monoAscendingFromZero edo minJump size
 
-nice41edo6scales = wellBehavedScaleFamilies 41 2 6 -- 323 of them
-nice41edo7scales = wellBehavedScaleFamilies 41 2 7 -- 5476 of them
-nice41edo8scales = wellBehavedScaleFamilies 41 2 8 -- too many to count!
+nice41edo6toneScales = wellBehavedScaleFamilies 41 2 6 -- 323 of them
+nice41edo7toneScales = wellBehavedScaleFamilies 41 2 7 -- 5476 of them
+nice41edo8toneScales = wellBehavedScaleFamilies 41 2 8 -- too many to count!
 
-nice31edo7scales  = wellBehavedScaleFamilies 31 2 7
-nice31edo7scales' = wellBehavedScaleFamilies 31 1 7
+nice31edo7toneScales  = wellBehavedScaleFamilies 31 2 7
+nice31edo7toneScales' = wellBehavedScaleFamilies 31 1 7
 
-nice17edo7scales  = wellBehavedScaleFamilies 17 2 7
-nice17edo7scales' = wellBehavedScaleFamilies 17 1 7
+nice22edo7toneScales = wellBehavedScaleFamilies 22 2 7
+nice19edo7toneScales = wellBehavedScaleFamilies 19 2 7
+nice17edo7toneScales = wellBehavedScaleFamilies 17 2 7
+nice17edo7toneScales' = wellBehavedScaleFamilies 17 1 7
+
 
 -- | `nthDifferencesIn` generalizes `thirdsIn`.
 -- Rather than fixing the difference at 2,
@@ -46,8 +50,10 @@ nice17edo7scales' = wellBehavedScaleFamilies 17 1 7
 -- i.e. the (floating-point-error-free)
 -- range of thirds in well-behaved scales in 12-edo.
 --
--- For fourths, I'll try (450,650).
--- Haven't given it much thought.
+-- For fourths, I'm trying (350,650).
+-- That admits both tritones in 41-edo,
+-- as well as the major third,
+-- which I need to admit to include the harmonic minor and major scales.
 
 nthDifferencesIn :: Int -> (Float, Float) -> Edo -> [Int] -> Bool
 nthDifferencesIn n (x,y) edo scale
