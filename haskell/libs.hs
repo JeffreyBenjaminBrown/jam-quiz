@@ -1,5 +1,6 @@
 import Quiz_58
 import Modes
+import NamedScalesAndFamilies
 import Tests
 import Util
 

@@ -36,6 +36,7 @@ library
   exposed-modules:
       Formulas,
       Modes,
+      NamedScalesAndFamilies,
       Quiz_58,
       Tests,
       Util
