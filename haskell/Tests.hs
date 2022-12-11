@@ -14,7 +14,15 @@ aTestSuite = TestList [
   TestLabel "test_nthDifferencesIn" test_nthDifferencesIn,
   TestLabel "test_minInCents_toMinInEdo" test_minInCents_toMinInEdo,
   TestLabel "test_maxInCents_toMaxInEdo" test_maxInCents_toMaxInEdo,
-  TestLabel "test_MonoAscending" test_MonoAscending ]
+  TestLabel "test_MonoAscending" test_MonoAscending,
+  TestLabel "test_wellBehavedScaleFamilies" test_wellBehavedScaleFamilies]
+
+test_wellBehavedScaleFamilies :: Test
+test_wellBehavedScaleFamilies = TestCase $ do
+  assertBool "There is only one 6-tone scale in 12-edo with steps no greater than 2." $
+    length (wellBehavedScaleFamilies 12 6 (50,250) (50,1150) (50,1150)) == 1
+  assertBool "There are four 7-tone scales in 12-edo with thirds in (250,450)." $
+    length (wellBehavedScaleFamilies 12 7 (50,350) (250,450) (50,1150)) == 4
 
 test_nthDifferencesIn :: Test
 test_nthDifferencesIn = TestCase $ do

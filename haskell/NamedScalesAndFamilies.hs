@@ -34,22 +34,63 @@ eq_8 =  [ round $ i * 41 / 8 | i <- [0..7]]
 eq_9 =  [ round $ i * 41 / 9 | i <- [0..8]]
 
 
--- -- | * Some scale families of various edos
---
+-- | * Some scale families of various edos,
+-- with their sizes in comments.
 
-familiar a b = wellBehavedScaleFamilies a b (45,255) (245,455) (345,655)
+familiar edo size = wellBehavedScaleFamilies edo size
+                    (45,355) (245,455) (345,755)
 
-nice6tone41edoScales = familiar 41 6
-nice7tone41edoScales = familiar 41 7
-nice8tone41edoScales = familiar 41 8
-nice9tone41edoScales = familiar 41 9
+nice6tone41edoScales = familiar 41 6 -- 280
+nice7tone41edoScales = familiar 41 7 -- 5428
+nice8tone41edoScales = familiar 41 8 -- halting?
+nice9tone41edoScales = familiar 41 9 -- halting?
 
-nice6tone17edoScales = familiar 17 6
-nice7tone17edoScales = familiar 17 7
-nice8tone17edoScales = familiar 17 8
-nice9tone17edoScales = familiar 17 9
+nice6tone34edoScales = familiar 34 6 -- 34
+nice7tone34edoScales = familiar 34 7 -- 1899
+nice8tone34edoScales = familiar 34 8 -- 1772
+nice9tone34edoScales = familiar 34 9 -- 74
 
-nice6tone12edoScales = familiar 12 6
-nice7tone12edoScales = familiar 12 7
-nice8tone12edoScales = familiar 12 8
-nice9tone12edoScales = familiar 12 9
+nice6tone31edoScales = familiar 31 6 -- 36
+nice7tone31edoScales = familiar 31 7 -- 705
+nice8tone31edoScales = familiar 31 8 -- 148
+nice9tone31edoScales = familiar 31 9 -- 0
+
+nice6tone24edoScales = familiar 24 6 -- 23
+nice7tone24edoScales = familiar 24 7 -- 196
+nice8tone24edoScales = familiar 24 8 -- 28
+nice9tone24edoScales = familiar 24 9 -- 0
+
+nice6tone22edoScales = familiar 22 6 -- 23
+nice7tone22edoScales = familiar 22 7 -- 196
+nice8tone22edoScales = familiar 22 8 -- 28
+nice9tone22edoScales = familiar 22 9 -- 0
+
+nice6tone19edoScales = familiar 19 6 -- 16
+nice7tone19edoScales = familiar 19 7 -- 160
+nice8tone19edoScales = familiar 19 8 -- 60
+nice9tone19edoScales = familiar 19 9 -- 2
+
+nice6tone17edoScales = familiar 17 6 -- 5
+nice7tone17edoScales = familiar 17 7 -- 39
+nice8tone17edoScales = familiar 17 8 -- 5
+nice9tone17edoScales = familiar 17 9 -- 0
+
+nice6tone15edoScales = familiar 15 6 -- 2
+nice7tone15edoScales = familiar 15 7 -- 3
+nice8tone15edoScales = familiar 15 8 -- 0
+nice9tone15edoScales = familiar 15 9 -- 0
+
+nice6tone14edoScales = familiar 14 6 -- 4
+nice7tone14edoScales = familiar 14 7 -- 23
+nice8tone14edoScales = familiar 14 8 -- 3
+nice9tone14edoScales = familiar 14 9 -- 0
+
+nice6tone13edoScales = familiar 13 6 -- 0
+nice7tone13edoScales = familiar 13 7 -- 3
+nice8tone13edoScales = familiar 13 8 -- 3
+nice9tone13edoScales = familiar 13 9 -- 0
+
+nice6tone12edoScales = familiar 12 6 -- 2 (whole, aug)
+nice7tone12edoScales = familiar 12 7 -- 4 (diatonic, melodic, harm+, harm-)
+nice8tone12edoScales = familiar 12 8 -- 1 (dim)
+nice9tone12edoScales = familiar 12 9 -- 0
