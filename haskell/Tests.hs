@@ -11,19 +11,19 @@ allTests = runTestTT $ TestList
 
 aTestSuite :: Test
 aTestSuite = TestList [
-  TestLabel "testThirdsIn" testThirdsIn,
+  TestLabel "test_nthDifferencesIn" test_nthDifferencesIn,
   TestLabel "testMonoAscending" testMonoAscending ]
 
-testThirdsIn :: Test
-testThirdsIn = TestCase $ do
+test_nthDifferencesIn :: Test
+test_nthDifferencesIn = TestCase $ do
   -- These tests use wide intervals to allow for floating-point error.
   assertBool "Dorian has only major and minor thirds." $
-    thirdsIn (290,410) 12 [0,2,3,5,7,9,10]
+    nthDifferencesIn 2 (290,410) 12 [0,2,3,5,7,9,10]
   assertBool "The whole tone scale has only major thirds." $
-    thirdsIn (390,410) 12 [0,2 .. 10]
+    nthDifferencesIn 2 (390,410) 12 [0,2 .. 10]
   assertBool "The symmetric 9-tone scale in 12-edo has thirds outside of the range (290,410)." $
     not $
-    thirdsIn (290,410) 12 [0,1,2, 4,5,6, 8,9,10]
+    nthDifferencesIn 2 (290,410) 12 [0,1,2, 4,5,6, 8,9,10]
 
 testMonoAscending :: Test
 testMonoAscending = TestCase $ do
@@ -32,4 +32,4 @@ testMonoAscending = TestCase $ do
   assertBool "monoAscendingFromZero 3 1 2" $
     monoAscendingFromZero 3 1 2 == [ [0,1], [0,2] ]
   assertBool "monoAscendingFromZero 5 2 3" $
-    monoAscendingFromZero 5 2 3 == [ [0,2,4] ]
+    monoAscendingFromZero 6 2 3 == [ [0,2,4] ]

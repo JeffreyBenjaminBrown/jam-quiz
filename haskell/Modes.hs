@@ -14,22 +14,29 @@ allModes edo scale =
   [ mode edo scale i
   | i <- [0..length scale - 1] ]
 
-nice41edo7scales = equivalents 41
-                   $ filter (thirdsIn (245, 455) 41)
-                   $ monoAscendingFromZero 41 2 7
+wellBehavedScaleFamilies :: Edo -> Int -> Int -> [[Int]]
+wellBehavedScaleFamilies edo minJump size =
+  equivalents edo
+  $ filter (nthDifferencesIn 2 (245, 455) edo)
+  $ monoAscendingFromZero edo minJump size
 
-nice31edo7scales = equivalents 31
-                   $ filter (thirdsIn (245, 455) 31)
-                   $ monoAscendingFromZero 31 2 7
+nice41edo6scales = wellBehavedScaleFamilies 41 2 6 -- 323 of them
+nice41edo7scales = wellBehavedScaleFamilies 41 2 7 -- 5476 of them
+nice41edo8scales = wellBehavedScaleFamilies 41 2 8 -- too many to count!
 
-nice17edo7scales = equivalents 17
-                   $ filter (thirdsIn (245, 455) 17)
-                   $ monoAscendingFromZero 17 2 7
+nice31edo7scales  = wellBehavedScaleFamilies 31 2 7
+nice31edo7scales' = wellBehavedScaleFamilies 31 1 7
 
--- | In a @thirds_in (x,y)@ scale,
+nice17edo7scales  = wellBehavedScaleFamilies 17 2 7
+nice17edo7scales' = wellBehavedScaleFamilies 17 1 7
+
+-- | `nthDifferencesIn` generalizes `thirdsIn`.
+-- Rather than fixing the difference at 2,
+-- it lets that difference be any number `n`.
+-- In a @thirds_in (x,y)@ scale,
 -- the thirds are all between @x@ and @y@ cents.
 --
--- I like (x,y) = (245,455).
+-- For thirds, I like (x,y) = (245,455).
 -- Those will admit every septimal minor and major third,
 -- even in an edo where the septimal minor third is around 2250c
 -- (which makes it equal to the septimal major second).
@@ -38,22 +45,26 @@ nice17edo7scales = equivalents 17
 -- Also it has the symmetry of giving 55c more on either side of (300,400),
 -- i.e. the (floating-point-error-free)
 -- range of thirds in well-behaved scales in 12-edo.
-thirdsIn :: (Float, Float) -> Edo -> [Int] -> Bool
-thirdsIn (x,y) edo scale
-  | length scale < 3 = False
+--
+-- For fourths, I'll try (450,650).
+-- Haven't given it much thought.
+
+nthDifferencesIn :: Int -> (Float, Float) -> Edo -> [Int] -> Bool
+nthDifferencesIn n (x,y) edo scale
+  | length scale < n+1 = False
   | otherwise = let
-      ext = scale ++ map (+edo) (take 2 scale)
+      ext = scale ++ map (+edo) (take n scale)
         -- Extended scale, 2 degrees into the next octave.
         -- For instance, [0,2,4,5,7,9,11,12,14] for major in 12-edo.
-      rotated = drop 2 scale ++ map (+edo) (take 2 scale)
+      rotated = drop n scale ++ map (+edo) (take n scale)
         -- Continuing that example, [4,5,7,9,11,12,14,16,17]
-      thirds = zipWith (-) rotated ext
-      thirdsInCents = map f thirds where
+      intervals = zipWith (-) rotated ext
+      intervalsInCents = map f intervals where
         f :: Int -> Float
         f i = (fromIntegral i / fromIntegral edo) * 1200
-      isGoodThird :: Float -> Bool
-      isGoodThird f = f > x && f < y
-      in all isGoodThird thirdsInCents
+      isGoodInterval :: Float -> Bool
+      isGoodInterval f = f > x && f < y
+      in all isGoodInterval intervalsInCents
 
 -- | All monotonic ascending series of length @size@,
 -- starting at 0,
@@ -76,7 +87,7 @@ monoAscendingFromZero top minJump size =
     -- Assumes the input list is in descending order.
     increments :: Int -> [Int] -> [[Int]]
     increments top (a:as) = [ b:a:as
-                            | b <- [a + minJump .. top-1]]
+                            | b <- [a + minJump .. top-minJump]]
 
 allTriads :: Edo -> [[Int]]
 allTriads edo = [ [0,a,b]
