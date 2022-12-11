@@ -115,6 +115,14 @@ minimal_mode _ [] = []
 minimal_mode edo scale =
   head $ L.sort $ allModes edo scale
 
+minInCents_toMinInEdo :: Edo -> Float -> Int
+minInCents_toMinInEdo edo cents =
+  ceiling $ cents * fromIntegral edo / 1200
+
+maxInCents_toMaxInEdo :: Edo -> Float -> Int
+maxInCents_toMaxInEdo edo cents =
+  floor $ cents * fromIntegral edo / 1200
+
 mode :: Edo
      -> [Int]
      -> Int -- ^ PITFALL: 0-indexed. So for example,

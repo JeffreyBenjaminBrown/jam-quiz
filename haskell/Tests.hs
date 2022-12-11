@@ -12,7 +12,9 @@ allTests = runTestTT $ TestList
 aTestSuite :: Test
 aTestSuite = TestList [
   TestLabel "test_nthDifferencesIn" test_nthDifferencesIn,
-  TestLabel "testMonoAscending" testMonoAscending ]
+  TestLabel "test_minInCents_toMinInEdo" test_minInCents_toMinInEdo,
+  TestLabel "test_maxInCents_toMaxInEdo" test_maxInCents_toMaxInEdo,
+  TestLabel "test_MonoAscending" test_MonoAscending ]
 
 test_nthDifferencesIn :: Test
 test_nthDifferencesIn = TestCase $ do
@@ -25,8 +27,22 @@ test_nthDifferencesIn = TestCase $ do
     not $
     nthDifferencesIn 2 (290,410) 12 [0,1,2, 4,5,6, 8,9,10]
 
-testMonoAscending :: Test
-testMonoAscending = TestCase $ do
+test_minInCents_toMinInEdo :: Test
+test_minInCents_toMinInEdo = TestCase $ do
+  assertBool "minInCents_toMinInEdo 12 250 == 2" $
+    minInCents_toMinInEdo 12 250 == 3
+  assertBool "minInCents_toMinInEdo 41 400 == 13" $
+    minInCents_toMinInEdo 41 400 == 14
+
+test_maxInCents_toMaxInEdo :: Test
+test_maxInCents_toMaxInEdo = TestCase $ do
+  assertBool "maxInCents_toMaxInEdo 12 250 == 2" $
+    maxInCents_toMaxInEdo 12 250 == 2
+  assertBool "maxInCents_toMaxInEdo 41 400 == 13" $
+    maxInCents_toMaxInEdo 41 400 == 13
+
+test_MonoAscending :: Test
+test_MonoAscending = TestCase $ do
   assertBool "monoAscendingFromZero 2 3 is empty" $
     monoAscendingFromZero 2 1 3 == []
   assertBool "monoAscendingFromZero 3 1 2" $
