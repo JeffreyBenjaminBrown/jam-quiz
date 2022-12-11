@@ -14,12 +14,13 @@ allModes edo scale =
   [ mode edo scale i
   | i <- [0..length scale - 1] ]
 
-wellBehavedScaleFamilies :: Edo -> Int -> Int -> [[Int]]
-wellBehavedScaleFamilies edo minJump size =
+wellBehavedScaleFamilies ::
+  Edo -> Int -> Int -> Int -> [[Int]]
+wellBehavedScaleFamilies edo minJump maxJump size =
   equivalents edo
   $ filter (nthDifferencesIn 3 (350, 650) edo)
   $ filter (nthDifferencesIn 2 (245, 455) edo)
-  $ monoAscendingFromZero edo minJump size
+  $ monoAscendingFromZero edo minJump maxJump size
 
 nice41edo6toneScales = wellBehavedScaleFamilies 41 2 6 -- 73 of them
 nice41edo7toneScales = wellBehavedScaleFamilies 41 2 7 -- 5154 of them
@@ -77,14 +78,19 @@ nthDifferencesIn n (x,y) edo scale
       isGoodInterval f = f > x && f < y
       in all isGoodInterval intervalsInCents
 
--- | All monotonic ascending series of length @size@,
+-- | All monotonic ascending *circular* series of length @size@,
 -- starting at 0,
--- with every integer less than @top@,
+-- using the integers modulo @top@,
 -- such that every pair of adjacent members
--- differs by at least @minJump@.
-monoAscendingFromZero :: Int -> Int -> Int -> [[Int]]
-monoAscendingFromZero top minJump size =
+-- differs by at least @minJump@ and at most @maxJump@,
+-- including the implicit jump from the last element
+-- to @top@.
+monoAscendingFromZero :: Int -> Int -> Int -> Int -> [[Int]]
+monoAscendingFromZero top minJump maxJump size =
   map reverse $
+  filter (\list -> top - head list <= maxJump) $
+    -- This ensures @maxJump@ applies even to the last jump,
+    -- where the scale wraps back on itself.
   incrementNTimes top (size-1) $ [[0]]
   where
     incrementNTimes :: Int -> Int -> [[Int]] -> [[Int]]
@@ -97,8 +103,10 @@ monoAscendingFromZero top minJump size =
     -- | All the ways of prepending a bigger element to the input list.
     -- Assumes the input list is in descending order.
     increments :: Int -> [Int] -> [[Int]]
-    increments top (a:as) = [ b:a:as
-                            | b <- [a + minJump .. top-minJump]]
+    increments top (a:as) =
+      [ b:a:as
+      | b <- [a + minJump ..
+               min (top - minJump) (a + maxJump) ] ]
 
 allTriads :: Edo -> [[Int]]
 allTriads edo = [ [0,a,b]

@@ -43,9 +43,21 @@ test_maxInCents_toMaxInEdo = TestCase $ do
 
 test_MonoAscending :: Test
 test_MonoAscending = TestCase $ do
-  assertBool "monoAscendingFromZero 2 3 is empty" $
-    monoAscendingFromZero 2 1 3 == []
-  assertBool "monoAscendingFromZero 3 1 2" $
-    monoAscendingFromZero 3 1 2 == [ [0,1], [0,2] ]
-  assertBool "monoAscendingFromZero 5 2 3" $
-    monoAscendingFromZero 6 2 3 == [ [0,2,4] ]
+  assertBool "modulo 3, if there are only 2 steps, and all steps must be of size exactly 1, then no scales satisfy" $
+    monoAscendingFromZero 3 1 1 2 == []
+  assertBool "more" $
+    monoAscendingFromZero 3 1 2    2 ==
+    monoAscendingFromZero 3 1 1000 2
+  assertBool "modulo 6, if steps are between 2 and 3 and there are only 2 steps, then both steps must be of size 3." $
+    monoAscendingFromZero 6 2 3 2 == [[0,3]]
+  assertBool "modulo 6, if steps are between 2 and 4, and there are only 2 steps, then this." $
+    monoAscendingFromZero 6 2 4 2 == [ [0,2], [0,3], [0,4] ]
+
+  -- I wrote these tests before maxJump was an argument,
+  -- so I just made that argument stupid-big to preserve them.
+  assertBool "monoAscendingFromZero 2 1 1000 3 is empty" $
+    monoAscendingFromZero 2 1 1000 3 == []
+  assertBool "monoAscendingFromZero 3 1 100 2" $
+    monoAscendingFromZero 3 1 1000 2 == [ [0,1], [0,2] ]
+  assertBool "monoAscendingFromZero 5 2 100 3" $
+    monoAscendingFromZero 6 2 1000 3 == [ [0,2,4] ]
