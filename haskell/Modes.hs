@@ -9,21 +9,6 @@ import qualified Data.Set as S
 
 type Edo = Int
 
-allModes :: Edo -> [Int] -> [[Int]]
-allModes edo scale =
-  [ mode edo scale i
-  | i <- [0..length scale - 1] ]
-
-scaleToNewEdo_many :: Edo -> Edo -> [Int] -> [[Int]]
-scaleToNewEdo_many from to scale = let
-  ms :: [[Int]] =
-    allModes from scale
-  in equivalents to $ map (scaleToNewEdo from to) ms
-
-scaleToNewEdo :: Edo -> Edo -> [Int] -> [Int]
-scaleToNewEdo from to = map go where
-  go :: Int -> Int
-  go = round . (* fromIntegral to) . (/ fromIntegral from) . fromIntegral
 
 wellBehavedScaleFamilies
   :: Edo
@@ -132,6 +117,22 @@ minimal_mode :: Edo -> [Int] -> [Int]
 minimal_mode _ [] = []
 minimal_mode edo scale =
   head $ L.sort $ allModes edo scale
+
+scaleToNewEdo_many :: Edo -> Edo -> [Int] -> [[Int]]
+scaleToNewEdo_many from to scale = let
+  ms :: [[Int]] =
+    allModes from scale
+  in equivalents to $ map (scaleToNewEdo from to) ms
+
+scaleToNewEdo :: Edo -> Edo -> [Int] -> [Int]
+scaleToNewEdo from to = map go where
+  go :: Int -> Int
+  go = round . (* fromIntegral to) . (/ fromIntegral from) . fromIntegral
+
+allModes :: Edo -> [Int] -> [[Int]]
+allModes edo scale =
+  [ mode edo scale i
+  | i <- [0..length scale - 1] ]
 
 minInCents_toMinInEdo :: Edo -> Float -> Int
 minInCents_toMinInEdo edo cents =
