@@ -40,6 +40,9 @@ eq_9 =  [ round $ i * 41 / 9 | i <- [0..8]]
 familiar edo size = wellBehavedScaleFamilies edo size
                     (45,355) (245,455) (345,755)
 
+familiarBut2ndsGT75 edo size = wellBehavedScaleFamilies edo size
+                               (75,355) (245,455) (345,755)
+
 nice6tone41edoScales = familiar 41 6 -- 280
 nice7tone41edoScales = familiar 41 7 -- 5428
 nice8tone41edoScales = familiar 41 8 -- halting?
@@ -74,6 +77,11 @@ nice6tone17edoScales = familiar 17 6 -- 5
 nice7tone17edoScales = familiar 17 7 -- 39
 nice8tone17edoScales = familiar 17 8 -- 5
 nice9tone17edoScales = familiar 17 9 -- 0
+
+nice6tone17edoScales' = familiarBut2ndsGT75 17 6 -- 3
+nice7tone17edoScales' = familiarBut2ndsGT75 17 7 -- 9
+nice8tone17edoScales' = familiarBut2ndsGT75 17 8 -- 1
+nice9tone17edoScales' = familiarBut2ndsGT75 17 9 -- 0
 
 nice6tone15edoScales = familiar 15 6 -- 2
 nice7tone15edoScales = familiar 15 7 -- 3

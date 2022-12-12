@@ -15,7 +15,14 @@ aTestSuite = TestList [
   TestLabel "test_minInCents_toMinInEdo" test_minInCents_toMinInEdo,
   TestLabel "test_maxInCents_toMaxInEdo" test_maxInCents_toMaxInEdo,
   TestLabel "test_MonoAscending" test_MonoAscending,
-  TestLabel "test_wellBehavedScaleFamilies" test_wellBehavedScaleFamilies]
+  TestLabel "test_wellBehavedScaleFamilies" test_wellBehavedScaleFamilies,
+  TestLabel "test_scaleToNewEdo_many" test_scaleToNewEdo_many
+  ]
+
+test_scaleToNewEdo_many :: Test
+test_scaleToNewEdo_many = TestCase $ do
+  assertBool "The chromatic scale in 5-edo to 10-edo." $
+    scaleToNewEdo_many 5 10 [0..4] == [[0,2..8]]
 
 test_wellBehavedScaleFamilies :: Test
 test_wellBehavedScaleFamilies = TestCase $ do

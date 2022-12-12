@@ -1,4 +1,4 @@
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ScopedTypeVariables, RankNTypes #-}
 
 module Modes where
 
@@ -13,6 +13,17 @@ allModes :: Edo -> [Int] -> [[Int]]
 allModes edo scale =
   [ mode edo scale i
   | i <- [0..length scale - 1] ]
+
+scaleToNewEdo_many :: Edo -> Edo -> [Int] -> [[Int]]
+scaleToNewEdo_many from to scale = let
+  ms :: [[Int]] =
+    allModes from scale
+  in equivalents to $ map (scaleToNewEdo from to) ms
+
+scaleToNewEdo :: Edo -> Edo -> [Int] -> [Int]
+scaleToNewEdo from to = map go where
+  go :: Int -> Int
+  go = round . (* fromIntegral to) . (/ fromIntegral from) . fromIntegral
 
 wellBehavedScaleFamilies
   :: Edo
