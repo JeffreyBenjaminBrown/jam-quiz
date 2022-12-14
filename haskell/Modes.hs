@@ -6,8 +6,7 @@ import qualified Data.List as L
 import           Data.Set (Set)
 import qualified Data.Set as S
 
-
-type Edo = Int
+import Util
 
 
 wellBehavedScaleFamilies
@@ -80,6 +79,9 @@ nthDifferencesIn n (x,y) edo scale
 -- differs by at least @minJump@ and at most @maxJump@,
 -- including the implicit jump from the last element
 -- to @top@.
+--
+-- TODO: This could be simpler:
+-- https://stackoverflow.com/a/74758782/916142
 monoAscendingFromZero :: Int -> Int -> Int -> Int -> [[Int]]
 monoAscendingFromZero top minJump maxJump size =
   map reverse $

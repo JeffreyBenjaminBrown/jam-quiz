@@ -35,6 +35,7 @@ library
               , random
   exposed-modules:
       Formulas,
+      IntervalScores,
       Modes,
       NamedScalesAndFamilies,
       Quiz_58,
