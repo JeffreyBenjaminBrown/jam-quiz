@@ -15,7 +15,7 @@ of these scales is just minor `[0,7,11,17,24,28,35]`,
 scale 1 is just major `[0,7,13,17,24,30,37]`,
 scale 2 is harmonic major `[0,7,13,17,24,28,37]`,
 and scale 3 is harmonic minor `[0,7,11,17,24,28,37]`.
- That, to me, confirms the process is decent.
+That, to me, confirms the process is decent.
 
 All the above have three just `5:4s`, three just `6:5`s, and one Pythagorean minor third.
 
@@ -32,16 +32,16 @@ In both the thirds include a Pythagorean major and two Pythagorean minors.
 Both have five perfect fifths,
 like the four most harmonic families.
 
-Scale 6 is just dorian with an up 6:
+Scale 6 is a just dorian with an up 6:
 `[0,7,11,17,24,31,35]`.
 Scale 7 is a just major with an up 6:
 `[0,7,13,17,24,31,37]`.
 
 ## Scale 8 is the "melodic" family
 
-The thirds are nearly diatonic:
+Its thirds are nearly diatonic:
 `[10, 13, 14, 13, 10, 11, 11]`.
-There are two tritones and one half-sharp fifth:
+It has two tritones and one half-sharp fifth:
 `[24, 26, 24, 24, 21, 21, 24]`.
 
 One mode is melodic major:
@@ -81,7 +81,7 @@ they aren't obviously interesting.
 ## Scales 20 and 21 are the first with more than one 11:9
 
 and they've got three of them.
-Both are constructed by shifting in parallel
+Both are constructed by shifting by a parallel microtone (1\41)
 two notes in a diatonic scale separated by a fifth.
 Scale 20 = lydian up 2 (8\41) up 6 (32\41)
 `[0,8,13,20,24,32,37]`
@@ -98,19 +98,22 @@ The three fifths come right in a row.
 Scale 22 = `[0,5,9,20,24,29,33]`
 Scale 23 = `[0,5,9,20,24,29,37]`
 
-# Scales discovered by data mining.
+# Scales discovered through data mining.
 
 ## Every scale has at least one pythagorean or neutral third
+
+How to see that:
 
 ```
 > x = filter (not . hasIntervalsIn 41 [10,12,14]) nice7tone41edoFamilies> length x
 0
 ```
 
-## By variation in thirds
+## Scales with extreme variation in thirds
 
-The most harmonic families with the least and the most variation in their thirds both have five perfect fifths.
+The most harmonic scale families with the least and the most variation in their thirds both have five perfect fifths.
 
+To find them, first define this:
 ```
 x = L.sortOn (sumOfSquaredDegrees 41 2) nice7tone41edoFamilies
 ```
@@ -141,7 +144,6 @@ x = L.sortOn (sumOfSquaredDegrees 41 2) nice7tone41edoFamilies
 [0,7,9,16,24,26,33]
 ```
 
-
 ## The most harmonic scale with no pyth third
 
 ```
@@ -160,7 +162,6 @@ myPrint $ allModes 41 $ x !! 0
 ## The most harmonious scale with no just third
 
 It has five perfect fifths and six neutral thirds.
-
 ```
 x = filter (not . hasIntervalsIn 41 [11,13]) nice7tone41edoFamilies
 myPrint $ allModes 41 $ x !! 0
@@ -174,8 +175,8 @@ myPrint $ allModes 41 $ x !! 0
 [0,7,12,17,24,29,36]
 ```
 
-
 ## The most harmonic scale with no 3:2
+
 ```
 x = filter (not . hasIntervalsIn 41 [24]) nice7tone41edoFamilies
 myPrint $ allModes 41 $ x !! 0
