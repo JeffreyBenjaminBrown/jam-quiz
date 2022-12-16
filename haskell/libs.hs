@@ -2,6 +2,7 @@ import IntervalScores
 import Modes
 import NamedScalesAndFamilies
 import Quiz_58
+import Stats
 import Tests
 import Util
 

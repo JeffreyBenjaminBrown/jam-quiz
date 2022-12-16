@@ -39,6 +39,7 @@ library
       Modes,
       NamedScalesAndFamilies,
       Quiz_58,
+      Stats,
       Tests,
       Util
   other-modules:
