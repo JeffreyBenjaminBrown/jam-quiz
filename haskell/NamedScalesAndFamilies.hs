@@ -48,16 +48,11 @@ familiarBut2ndsGT75 edo size =
   wellBehavedScaleFamilies edo size
   (75,355) (245,455) (345,755)
 
+
+-- | ** I give these names so that they won't be recomputed.
+
 nice6tone41edoFamilies = familiar 41 6 -- 280
 nice7tone41edoFamilies = familiar 41 7 -- 5428
--- Wonderfully, the first two are just major and just minor,
--- the third (!!2) is harmonic minor [0,7,11,17,24,28,37],
--- !!3 is harmonic major [0,7,13,17,24,28,37],
--- and !!4 is melodic minor [0,7,11,17,24,31,37].
--- !!5 and !!6 are slightly Pythagorean diatonic variants.
--- !!7 has six 12\41 intervals and five 24\41.
--- !!8 is the first with lots of (3) septimal thirds,
---     equal to just major with degrees 2 and 6 half-flat.
 
 nice8tone41edoFamilies = familiar 41 8 -- halting?
 nice9tone41edoFamilies = familiar 41 9 -- halting?
