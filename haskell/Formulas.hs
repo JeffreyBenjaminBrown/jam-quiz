@@ -3,11 +3,10 @@
 {-# LANGUAGE TupleSections #-}
 module Formulas where
 
-import qualified Data.Map as M
+import           Control.Monad.State
 import qualified Data.List as L
-
-import Control.Monad.State
-import System.Random
+import qualified Data.Map as M
+import           System.Random
 
 
 quizNames, quizFormulas, quizVariants, quizModes :: Int -> IO ()

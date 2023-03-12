@@ -57,10 +57,11 @@ They are the first with both septimal thirds,
 and the first in which the major septimal third *is* a third
 (rather than a fourth).
 They have weird fifths --
-four `3:2`s, one `10:7`, *one `11:8`, and one `8:5`*.
+four `3:2`s, a `10:7`, *an `11:8` and an `8:5`*.
 In both one scale step is a giant `6:5`.
 Both are "harmonic something" scales in which the "out note"
-is exaggerated by a half-sharp or half-flat.
+-- the one distinguishing it from a diatonic one --
+is exaggerated by a half-sharp if sharp or half-flat if flat.
 
 Scale 9 is harmonic major but with 26: `[0,7,13,17,24,26,37]`
 Thirds: `[13, 15, 11, 13, 10, 11, 9]`

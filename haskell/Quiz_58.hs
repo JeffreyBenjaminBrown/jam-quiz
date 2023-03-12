@@ -30,8 +30,9 @@ monome_quiz =
             monome_position_to_edo_value (col,row)
           go rest
 
+-- quiz_grid_sums 46 4 7  (0,5) (-4,4)
 -- quiz_grid_sums 58 15 2 (0,4) (-4,4)
--- quiz_grid_sums 41 8 1 (0,5) (-4,4)
+-- quiz_grid_sums 41 8 1  (0,5) (-4,4)
 quiz_grid_sums :: Int -> Int      -> Int      -> (Int,Int)    -> (Int,Int) -> IO ()
 quiz_grid_sums    edo colInterval rowInterval (minCol,maxCol) (minRow,maxRow) = let
   bound :: Int = edo-1

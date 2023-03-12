@@ -80,8 +80,9 @@ nthDifferencesIn n (x,y) edo scale
 -- including the implicit jump from the last element
 -- to @top@.
 --
--- TODO: This could be simpler:
--- https://stackoverflow.com/a/74758782/916142
+-- TODO: This could be simpler.
+-- See [[list comprehensions when I want to bind a variable number of variables]] in org-roam,
+-- or this on SO: https://stackoverflow.com/a/74758782/916142
 monoAscendingFromZero :: Int -> Int -> Int -> Int -> [[Int]]
 monoAscendingFromZero top minJump maxJump size =
   map reverse $
