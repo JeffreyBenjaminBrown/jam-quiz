@@ -34,11 +34,13 @@ library
               , mtl
               , random
   exposed-modules:
+      EdoMath,
       Formulas,
       Formulas.Data,
       IntervalScores,
       Modes,
       NamedScalesAndFamilies,
+      Quiz,
       Quiz_58,
       Stats,
       Tests,
