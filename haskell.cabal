@@ -35,6 +35,7 @@ library
               , random
   exposed-modules:
       Formulas,
+      Formulas.Data,
       IntervalScores,
       Modes,
       NamedScalesAndFamilies,
