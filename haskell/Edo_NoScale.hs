@@ -1,8 +1,20 @@
-module EdoMath where
+module Edo_NoScale where
 
 import Quiz
 import Util
 
+
+quizEdoTriads :: Edo -> Int -> IO ()
+quizEdoTriads edo randomSeed = let
+  triads :: [ ( (), [Int] ) ]
+  triads = [ ( (),
+               [a,b,c] )
+           | a <- [0..edo]
+           , b <- [0..edo]
+           , c <- [0..edo]
+           , a < b
+           , b < c ]
+  in quizKVList ("Q: ", "A: ") triads randomSeed
 
 {- | Assuming `divisor` divides `edo` evenly,
 @quizEdoPartitions edo divisor randomSeed@
@@ -37,8 +49,8 @@ quizEdoComplements edo randomSeed = let
   in quizKVList ("Q: ", "A: ") questions randomSeed
 
 {- | Quizzes the user on sums modulo an edo. -}
-quizEdo :: Edo -> Int -> IO ()
-quizEdo e randomSeed = let
+quizEdoSums :: Edo -> Int -> IO ()
+quizEdoSums e randomSeed = let
   notePairs = [ (a,b)
               | a <- [-e .. e],
                 b <- [-e .. e] ]
