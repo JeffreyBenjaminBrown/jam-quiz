@@ -9,9 +9,9 @@ quizEdoTriads edo randomSeed = let
   triads :: [ ( (), [Int] ) ]
   triads = [ ( (),
                [a,b,c] )
-           | a <- [0..edo]
-           , b <- [0..edo]
-           , c <- [0..edo]
+           | a <- [0..edo-1]
+           , b <- [0..edo-1]
+           , c <- [0..edo-1]
            , a < b
            , b < c ]
   in quizKVList ("Q: ", "A: ") triads randomSeed

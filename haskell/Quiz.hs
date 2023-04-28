@@ -51,7 +51,10 @@ It asks the question by asking, if @kType@ is @k@,
 for the user to name the corresponding @vType@.
 -}
 quizKVPair :: (Show a, Show b)
-           => (String, String) -> (a,b) -> IO () -> IO ()
+           => (String, String)
+           -> (a,b)
+           -> IO ()
+           -> IO ()
 quizKVPair (kType, vType) (k,v) followAction = do
           putStrLn $ "\n\n" ++ kType ++ ": " ++ show k
           putStrLn $ vType ++ "?"
