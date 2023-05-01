@@ -1,2 +1,5 @@
 -- :m Quiz_58
 :set prompt "> "
+
+import qualified Data.Map  as M
+import qualified Data.List as L
