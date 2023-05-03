@@ -5,6 +5,51 @@ import Data.List (intersperse)
 import Quiz
 
 
+quiz_changes3 :: Int -> IO ()
+quiz_changes3 seed = quizKVList ("","") changes seed where
+  changes :: [(String, String)]
+  changes = [ (concat $ intersperse ", " [a,b,c,d],
+               "")
+            | a <- object_mod_3
+            , b <- object_3
+            , c <- change_3
+            , d <- feel_3 ]
+
+object_mod_3 :: [String]
+object_mod_3 = ["within", "across", "merge", "split"]
+
+object_3 :: [String]
+object_3 = ["voice", "rhythm", "melody", "pitch set", "tone row"]
+
+change_3 :: [String]
+change_3 =
+  [ "more", "fewer",
+    "apply next change to one of",
+    "vary amplitude across",
+    "more", "fewer",
+    "slower", "faster",
+    "more duration", "fewer duration",
+    "more rhythm", "less rhythm",
+    "wider pitch", "narrower pitch",
+    "higher pitch", "lower pitch",
+    "quieter", "louder",
+    "more dynamic", "less dynamic",
+    "longer extrinsic", "longer intrinsic",
+    "shorter extrinsic", "shorter intrinsic",
+    "permute", "reverse",
+    "apply next change to one of",
+    "vary amplitude across",
+    "symmetric", "diatonic", "xen" ]
+
+feel_3 :: [String]
+feel_3 =
+  [ "funky", "grandiose", "lighthearted", "circus",
+    "agitated", "peaceful", "alien", "pop", "metal", "circus",
+    "wandering",
+    "complex", "simple", "call and response",
+    "symmetric chords", "diatonic chords", "xen pitch", "bichords"
+  ]
+
 quiz_changes2 :: Int -> IO ()
 quiz_changes2 seed = quizKVList ("","") changes seed where
   changes :: [(String, String)]

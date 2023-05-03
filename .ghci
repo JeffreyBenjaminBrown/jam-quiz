@@ -3,3 +3,7 @@
 
 import qualified Data.Map  as M
 import qualified Data.List as L
+
+-- TODO : Why are these necessary?
+import Changes
+import Edo_NoScale
