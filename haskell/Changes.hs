@@ -5,6 +5,22 @@ import Data.List (intersperse)
 import Quiz
 
 
+
+quiz_chord_changes :: Int -> Int -> IO ()
+quiz_chord_changes edo seed =
+  quizKVList ("","") changes seed
+  where
+    changes :: [(String, String)]
+    changes = [ (concat $ intersperse ", " [a,b,c],
+                 "")
+              | a <- ["min","maj"],
+                b <- [ "bass " ++ x ++ " through chord tones"
+                     | x <- ["rising", "falling"] ],
+                c <- [ "root " ++ direction ++ " by " ++ show amount
+                     | direction <- ["rising","falling"],
+                       amount <- [1 .. edo-1] ] ]
+
+
 quiz_changes3 :: Int -> IO ()
 quiz_changes3 seed = quizKVList ("","") changes seed where
   changes :: [(String, String)]
@@ -46,6 +62,8 @@ feel_3 =
   [ "funky", "grandiose", "lighthearted", "circus",
     "agitated", "peaceful", "alien", "pop", "metal", "circus",
     "wandering",
+    "pedal tone",
+    "more feel/intuition ~ less understood",
     "complex", "simple", "call and response",
     "symmetric chords", "diatonic chords", "xen pitch", "bichords"
   ]
