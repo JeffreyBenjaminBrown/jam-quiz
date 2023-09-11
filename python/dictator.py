@@ -1,7 +1,5 @@
-# import python.random_metronomic_instructions as rmi
-
-import time
 import random
+import time
 
 
 dictats = {
@@ -36,31 +34,3 @@ def dictator ():
     if k == "scale": v = str( random.randint(0,11) ) + " " + v
     print( k + ": " + v )
     time.sleep(1)
-
-# TODO : Should
-def quizOutside ( edo : int ):
-  pass
-
-def quizPairs ( edo : int ):
-  a = random.randint ( 1 , edo-1 )
-  b = random.randint ( 1 , edo-1 )
-  c = random.randint ( 0, 1 )
-  if c > 0:
-    (q, a) = (str(a) + " + " + str(b), (a+b) % edo)
-  else:
-    (q, a) = (str(a) + " - " + str(b), (a-b) % edo)
-  print( q, "?" )
-  input()
-  print( str(a) )
-  quizPairs(edo)
-
-# TODO : Unfinished. Not sure what I want this to do,
-# but if I need conditions to hold on the random choices,
-# this (via a list comprehension) is a more natural way to do it
-# than trying random stuff and regenerating it if it fails.
-def quizTriads ( edo : int ):
-  triads = [ (a,b,c)
-             for a in range ( 0, edo )
-             for b in range ( 0, edo )
-             for c in range ( 0, edo )
-             if a < b & b < c ]
