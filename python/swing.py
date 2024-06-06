@@ -1,19 +1,59 @@
+# PURPOSE:
+# Test your ability to hear different amounts of swing.
+#
+# USAGE:
+# First be sure you have `pygame` installed for Python.
+# On Debian systems (including Ubuntu) `pip install pygame`
+# probably does it.
+# If you use Nix, you can find a Nix shell script for it here:
+#   https://github.com/JeffreyBenjaminBrown/jam-quiz/blob/master/shell.nix
+#
+# Then customize the values in the section called
+# "CUSTOMIZE THESE VALUES".
+#
+# Then load the code into a Python shell.
+# I like to just copy the whole text and paste it into iPython.
+# (Less heavyweight Python shells sometimes choke
+# on multi-line pastes.)
+#
+# To start a new quiz, type `n()`, close your eyes, and hit Return.
+# The answer will be displayed on the screen.
+# Listen until you think you know the answer, then open your eyes,
+# and press Ctrl-C to stop the drum loop.
+# You can optionally include a numeric argument to `n()`
+# that dictates the duration of a complete cycle in seconds.
+# That value defaults to 1 second.
+#
+# To replay the last quiz, type `r().
+
 from   dataclasses import dataclass
 import pygame
 import random
 from   time import sleep
 
 
-dirt_samples : str = "/home/jeff/.local/share/SuperCollider/downloaded-quarks/Dirt-Samples"
+swing_possibilities = [
+  # CUSTOMIZE THIS LIST.
+  # These are the swing values, as percentages,
+  # that the quizzer chooses between.
+  # A value of 0.5 gives straight time --
+  # the same duration from snare to hat as from hat to snare.
+  # An elementary school swing value would be 0.666 --
+  # the snare two-thirds of the way from the preceding snare
+  # to the subsequent one.
+  0.45, 0.5, 0.55]
 
 pygame.mixer.init()
 
-hat   = pygame.mixer.Sound (
-  "/".join ( [ dirt_samples,
-               "hc/001_VoodooHihat.wav" ] ) )
 snare = pygame.mixer.Sound (
-  "/".join ( [ dirt_samples,
-               "sn/ST0T0S3.wav" ] ) )
+  # CUSTOMIZE THIS PATH.
+  # Point it to an audio file you like, to use as the snare.
+  "/home/jeff/.local/share/SuperCollider/downloaded-quarks/Dirt-Samples/sn/ST0T0S3.wav" )
+
+hat   = pygame.mixer.Sound (
+  # CUSTOMIZE THIS PATH.
+  # Point it to an audio file you like, to use as the hat.
+  "/home/jeff/.local/share/SuperCollider/downloaded-quarks/Dirt-Samples/hc/001_VoodooHihat.wav" )
 
 @dataclass
 class Question:
@@ -32,8 +72,10 @@ class Question:
 # PITFALL: Global variable.
 # I wouldn't need this if I could
 # get multiprocessing to work with pygame;
-# see the files called
+# for failed attempts, see the files called
 #   swing_multiproc_*_fail.py
+# Strangely, those subprocesses will print things,
+# but they refuse to play sounds.
 Q = Question ( 1,2,3 )
 
 def play_forever ( q : Question ):
@@ -45,13 +87,18 @@ def play_forever ( q : Question ):
     hat.play   ()
     sleep      (after_hat)
 
-# execute a new quiz
-def n ( bar_duration : float = 1 ) -> Question:
+# Execute a new quiz
+def n ( bar_duration : float = 1 ):
   global Q
-  after_snare = random.choice( [0.45, 0.5, 0.55] )
+  after_snare = random.choice( swing_possibilities )
   after_hat = 1 - after_snare
   Q = Question ( after_snare = after_snare,
                  after_hat = after_hat,
                  bar_duration = bar_duration )
   print ( after_snare )
   play_forever (Q)
+
+# Repeat the last quiz
+def r ():
+  global Q
+  play_forever(Q)
